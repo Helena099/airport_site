@@ -1,0 +1,31 @@
+{% extends "airport/base.html" %}
+{% block title %}Liste des services{% endblock %}
+{% block content %}
+<h1 class="text-xl font-bold mb-4">Services</h1>
+<a class="text-blue-600" href="{% url 'service_add' %}">➕ Ajouter</a>
+<table class="mt-4 w-full bg-white shadow">
+  <thead>
+    <tr class="bg-gray-200">
+      <th class="px-2 py-1 text-left">Type</th>
+      <th class="px-2 py-1 text-left">Vol</th>
+      <th class="px-2 py-1 text-left">Statut</th>
+      <th class="px-2 py-1"></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for s in object_list %}
+    <tr class="border-b hover:bg-gray-50">
+      <td class="px-2 py-1">{{ s.service_type }}</td>
+      <td class="px-2 py-1">{{ s.flight.flight_number }}</td>
+      <td class="px-2 py-1">{{ s.status }}</td>
+      <td class="px-2 py-1 space-x-2">
+        <a class="text-yellow-600" href="{% url 'service_edit' s.pk %}">✏️</a>
+        <a class="text-red-600" href="{% url 'service_delete' s.pk %}">🗑</a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="4" class="px-2 py-4 text-center">Aucun service.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

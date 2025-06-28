@@ -1,0 +1,7 @@
+Django~=5.0
+djongo5~=1.0
+pymongo~=4.7
+pandas~=2.2
+scikit-learn~=1.5
+scipy~=1.13
+python-dotenv~=1.0

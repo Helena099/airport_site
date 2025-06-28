@@ -1,0 +1,2 @@
+DJANGO_SECRET_KEY=changeme-super-secret
+MONGO_URI=mongodb+srv://kadifofana93:MdpTest2025@cluster0.tsfvsku.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

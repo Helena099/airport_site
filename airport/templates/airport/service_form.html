@@ -1,0 +1,10 @@
+{% extends "airport/base.html" %}
+{% block title %}{% if object %}Modifier service{% else %}Ajouter service{% endif %}{% endblock %}
+{% block content %}
+<h1 class="text-xl font-bold mb-4">{% if object %}Modifier{% else %}Ajouter{% endif %} un service</h1>
+<form method="post" class="space-y-4 bg-white p-4 shadow w-full max-w-xl">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="bg-blue-600 text-white px-4 py-2 rounded">Sauvegarder</button>
+</form>
+{% endblock %}

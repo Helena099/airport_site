@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Airport App{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-100 p-4">
+  <nav class="mb-6 space-x-4">
+    <a href="{% url 'passenger_list' %}">Passagers</a>
+    <a href="{% url 'flight_list' %}">Vols</a>
+    <a href="{% url 'service_list' %}">Services</a>
+    <a href="{% url 'reco' %}">Recommandations</a>
+  </nav>
+  {% block content %}{% endblock %}
+</body>
+</html>

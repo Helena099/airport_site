@@ -1,0 +1,12 @@
+{% extends "airport/base.html" %}
+{% block title %}Détails passager{% endblock %}
+{% block content %}
+<h1 class="text-xl font-bold mb-4">Détails du passager</h1>
+<ul class="bg-white p-4 shadow space-y-2">
+  <li><strong>Nom&nbsp;:</strong> {{ object.first_name }} {{ object.last_name }}</li>
+  <li><strong>Vol&nbsp;:</strong> {{ object.flight.flight_number }}</li>
+  <li><strong>Destination préférée&nbsp;:</strong> {{ object.destination }}</li>
+  <li><strong>Classe&nbsp;:</strong> {{ object.travel_class }}</li>
+</ul>
+<a class="mt-4 inline-block text-blue-600" href="{% url 'passenger_list' %}">← Retour</a>
+{% endblock %}
