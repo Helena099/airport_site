@@ -19,6 +19,8 @@ INSTALLED_APPS = [
     "airport",
 ]
 
+INSTALLED_APPS += ["rest_framework"]
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -49,19 +51,38 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "airport_site.wsgi.application"
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "djongo",
+#         "NAME": "airport",
+#         "ENFORCE_SCHEMA": False,
+#         "CLIENT": {
+#             "host": os.getenv("MONGO_URI"),
+#         },
+#     }
+# }
+
 DATABASES = {
-    "default": {
+    "default": {                       # SQLite pour tout ce que Django génère
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    },
+    "mongo": {                         # Djongo, uniquement pour l’app airport
         "ENGINE": "djongo",
         "NAME": "airport",
         "ENFORCE_SCHEMA": False,
         "CLIENT": {
-            "host": os.getenv("MONGO_URI"),
+            "host": os.getenv("MONGO_URI", "mongodb://localhost:27017/"),
         },
-    }
+    },
 }
 
+DATABASE_ROUTERS = ["airport.routers.MongoRouter"]
+
+
 # Email backend
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

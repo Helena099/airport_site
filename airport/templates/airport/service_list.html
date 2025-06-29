@@ -1,11 +1,13 @@
 {% extends "airport/base.html" %}
-{% block title %}Liste des services{% endblock %}
+{% block title %}Services{% endblock %}
+
 {% block content %}
 <h1 class="text-xl font-bold mb-4">Services</h1>
-<a class="text-blue-600" href="{% url 'service_add' %}">➕ Ajouter</a>
+<a class="text-blue-600" href="{% url 'service_add' %}">+ Ajouter</a>
+
 <table class="mt-4 w-full bg-white shadow">
-  <thead>
-    <tr class="bg-gray-200">
+  <thead class="bg-gray-200">
+    <tr>
       <th class="px-2 py-1 text-left">Type</th>
       <th class="px-2 py-1 text-left">Vol</th>
       <th class="px-2 py-1 text-left">Statut</th>
@@ -16,16 +18,20 @@
   {% for s in object_list %}
     <tr class="border-b hover:bg-gray-50">
       <td class="px-2 py-1">{{ s.service_type }}</td>
-      <td class="px-2 py-1">{{ s.flight.flight_number }}</td>
+      <td class="px-2 py-1">{{ s.flight_id }}</td>
       <td class="px-2 py-1">{{ s.status }}</td>
       <td class="px-2 py-1 space-x-2">
-        <a class="text-yellow-600" href="{% url 'service_edit' s.pk %}">✏️</a>
-        <a class="text-red-600" href="{% url 'service_delete' s.pk %}">🗑</a>
+        <a class="text-yellow-600" href="{% url 'service_edit' s.pk %}">&#9998;</a>
+        <a class="text-red-600"    href="{% url 'service_delete' s.pk %}">&#128465;</a>
       </td>
     </tr>
   {% empty %}
-    <tr><td colspan="4" class="px-2 py-4 text-center">Aucun service.</td></tr>
+    <tr><td colspan="4" class="text-center py-4">Aucun service.</td></tr>
   {% endfor %}
   </tbody>
 </table>
+
+{% if has_next %}
+  <a class="mt-4 inline-block text-blue-600" href="?page={{ page|add:1 }}">Page suivante →</a>
+{% endif %}
 {% endblock %}

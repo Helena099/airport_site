@@ -1,12 +1,14 @@
 {% extends "airport/base.html" %}
-{% block title %}Liste des vols{% endblock %}
+{% block title %}Vols{% endblock %}
+
 {% block content %}
 <h1 class="text-xl font-bold mb-4">Vols</h1>
-<a class="text-blue-600" href="{% url 'flight_add' %}">➕ Ajouter</a>
+<a class="text-blue-600" href="{% url 'flight_add' %}">+ Ajouter</a>
+
 <table class="mt-4 w-full bg-white shadow">
-  <thead>
-    <tr class="bg-gray-200">
-      <th class="px-2 py-1 text-left">Numéro</th>
+  <thead class="bg-gray-200">
+    <tr>
+      <th class="px-2 py-1 text-left">N° vol</th>
       <th class="px-2 py-1 text-left">Départ</th>
       <th class="px-2 py-1 text-left">Arrivée</th>
       <th class="px-2 py-1 text-left">Statut</th>
@@ -21,13 +23,17 @@
       <td class="px-2 py-1">{{ f.arrival_airport }}</td>
       <td class="px-2 py-1">{{ f.status }}</td>
       <td class="px-2 py-1 space-x-2">
-        <a class="text-yellow-600" href="{% url 'flight_edit' f.pk %}">✏️</a>
-        <a class="text-red-600" href="{% url 'flight_delete' f.pk %}">🗑</a>
+        <a class="text-yellow-600" href="{% url 'flight_edit' f.pk %}">&#9998;</a>
+        <a class="text-red-600"    href="{% url 'flight_delete' f.pk %}">&#128465;</a>
       </td>
     </tr>
   {% empty %}
-    <tr><td colspan="5" class="px-2 py-4 text-center">Aucun vol.</td></tr>
+    <tr><td colspan="5" class="text-center py-4">Aucun vol.</td></tr>
   {% endfor %}
   </tbody>
 </table>
+
+{% if has_next %}
+  <a class="mt-4 inline-block text-blue-600" href="?page={{ page|add:1 }}">Page suivante →</a>
+{% endif %}
 {% endblock %}

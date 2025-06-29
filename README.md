@@ -1,94 +1,102 @@
-# Airport Management & Recommendation System
+# Airport Recommendation Demo
 
-**Full‑stack Django 5 + MongoDB app** for managing flights, passengers, airport services and generating travel‑destination recommendations.
+This repository is a **Django + MongoDB** proof‑of‑concept that
 
----
-## Features
-* Web **CRUD** (Create / Read / Update / Delete) for **Passengers, Flights, Services**  
-* **K‑Nearest Neighbours** algorithm suggests new destinations for a passenger (`/reco?passenger_id=...`)  
-* Clean **Tailwind CSS** templates + Django admin  
-* Runs on **MongoDB Atlas** (or local) through **djongo5**  
-
----
-## Stack
-| Layer | Tech |
-|-------|------|
-| Backend | Python 3.11 · Django 5 |
-| Database | MongoDB + djongo5 |
-| ML | pandas · scikit‑learn |
-| Front | Django templates (Tailwind) |
+* stores flight / passenger / service data in MongoDB,
+* serves CRUD pages with Django,
+* suggests similar destinations to a passenger,
+* (optionally) e‑mails these suggestions,
+* can be queried by REST/JSON for use in Postman.
 
 ---
-## Project Tree
+
+## 1 · Project tree
+
 ```
-airport_site/
-├── manage.py
-├── .env                 # secrets (Mongo URI, Django key)
-├── requirements.txt
-├── Makefile             # venv / migrate / run shortcuts
-├── airport_site/        # Django settings
-│   ├── settings.py
-│   └── ...
-└── airport/             # Core app
-    ├── models.py
-    ├── views.py
-    ├── urls.py
-    ├── reco.py          # recommendation engine
-    └── templates/airport/
-        └── ...
+airport_site/                 ← repo root
+├─ .env.example               ← sample environment file
+├─ README.md                  ← **you are here**
+├─ requirements.txt
+├─ Scripts/
+│  └─ load_csv.py             ← import the 5 CSV files into Mongo
+├─ static/                    ← (optional) CSS/JS if you add any
+├─ manage.py
+├─ airport_site/              ← Django project
+│  ├─ settings.py
+│  ├─ urls.py
+│  └─ wsgi.py
+└─ airport/                   ← main app
+   ├─ models.py               ← Djongo models (PK = ObjectId)
+   ├─ views.py                ← list views use PyMongo, rest uses Django CBV
+   ├─ routers.py              ← routes airport models to “mongo” DB
+   ├─ reco.py                 ← K‑NN recommender
+   ├─ templates/airport/
+   │  ├─ base.html
+   │  ├─ passenger_list.html
+   │  ├─ flight_list.html
+   │  ├─ service_list.html
+   │  └─ reco.html
+   └─ forms.py
 ```
 
 ---
-## Quick Start
 
-1. **Clone**
-   ```bash
-   git clone <repo> && cd airport_site
-   ```
+## 2 · Quick‑start (local dev)
 
-2. **Environment**
-   ```bash
-   cp .env.example .env   # or edit .env
-   # inside .env
-   # DJANGO_SECRET_KEY=super‑secret-key
-   # MONGO_URI=mongodb+srv://user:pwd@cluster.mongodb.net/?retryWrites=true&w=majority
-   ```
+```bash
+git clone https://github.com/yourname/airport_site.git
+cd airport_site
 
-3. **Install**
-   *With proxy ? Add `[global] proxy = http://myproxy:3128` to `pip.conf`.*
+# 1) Python venv
+python -m venv venv
+source venv/bin/activate      # Windows: venv\Scripts\activate
+pip install -r requirements.txt
 
-   ```bash
-   make venv           # or: python -m venv venv && . venv/bin/activate
-   ```
+# 2) MongoDB
+#   a) Atlas : create cluster, get connection string
+#   b) Local : `mongod --dbpath /your/data`
+cp .env.example .env          # fill MONGO_URI (and EMAIL_… if SMTP)
 
-4. **Migrations + admin**
-   ```bash
-   make migrate
-   venv/bin/python manage.py createsuperuser
-   ```
+# 3) Import demo data
+python Scripts/load_csv.py
 
-5. **Run**
-   ```bash
-   make run
-   # http://127.0.0.1:8000            (web UI)
-   # http://127.0.0.1:8000/admin      (admin)
-   ```
+# 4) Run Django
+python manage.py runserver
+```
+
+Visit:
+
+* `http://127.0.0.1:8000/passengers/` – CRUD passengers  
+* `http://127.0.0.1:8000/flights/` – flights  
+* `http://127.0.0.1:8000/services/` – services  
+* `http://127.0.0.1:8000/reco/?passenger_id=P00001` – recommendations
+
+> **Tip:** mails are printed to the console (backend console).  
+> Change `EMAIL_BACKEND` in *settings.py* to use SMTP or file backend.
 
 ---
-## Endpoints (HTML views)
 
-| Method | URL | Purpose |
-|--------|-----|---------|
-| GET  | `/passengers/` | List passengers |
-| GET  | `/passengers/add/` | Passenger form |
-| POST | `/passengers/add/` | Create passenger |
-| GET/POST | `/passengers/<id>/edit/` | Update passenger |
-| POST | `/passengers/<id>/delete/` | Delete passenger |
-| _(Same pattern for `/flights/` & `/services/`)_ |
-| GET  | `/reco?passenger_id=<pid>` | Destination suggestions |
+## 3 · Environment variables
 
-> **API with Postman ?**  
-> These routes accept standard form‑encoded POSTs, so you can hit them with Postman by sending the right fields.  
-> For a pure JSON REST API, plug **Django REST Framework** later on.
+| Name | Example | Purpose |
+|------|---------|---------|
+| `MONGO_URI` | `mongodb://localhost:27017/` | Mongo connection |
+| `DJANGO_SECRET_KEY` | `change‑me‑in‑prod` | Django secret |
+| `EMAIL_USER` | `bot@gmail.com` | (if SMTP) |
+| `EMAIL_PASS` | `…` | (if SMTP) |
+
+---
+
+## 4 · API (for Postman)
+
+The same collections are exposed as read‑only JSON:
+
+```
+GET /api/passengers/          # paginated list
+GET /api/flights/
+GET /api/services/
+```
+
+Add or tweak viewsets in `airport/api_views.py`.
 
 ---

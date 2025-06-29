@@ -1,14 +1,19 @@
 {% extends "airport/base.html" %}
+
 {% block title %}Recommandations{% endblock %}
+
 {% block content %}
 <h1 class="text-xl font-bold">Recommandation de destinations</h1>
+
 <form method="get" class="mt-4 space-x-2">
-  <label for="pid">Passenger ID :</label>
-  <input class="border p-1" type="text" name="passenger_id" id="pid" value="{{ pid|default:'' }}">
+  <label for="pid">Passenger ID&nbsp;:</label>
+  <input class="border p-1" type="text" name="passenger_id" id="pid"
+         value="{{ pid|default:'' }}">
   <button class="bg-blue-600 text-white px-3 py-1 rounded">Go</button>
 </form>
+
 {% if suggestions %}
-  <h2 class="mt-6 font-semibold">Destinations suggérées :</h2>
+  <h2 class="mt-6 font-semibold">Destinations suggérées&nbsp;:</h2>
   <ul class="list-disc pl-5">
     {% for dest in suggestions %}
       <li>{{ dest }}</li>
@@ -16,5 +21,10 @@
   </ul>
 {% elif pid %}
   <p class="mt-4 text-red-600">Aucune suggestion trouvée.</p>
+{% endif %}
+
+{% if mail_preview %}
+  <h2 class="mt-6 text-lg font-semibold">Prévisualisation du mail&nbsp;:</h2>
+  <pre class="mt-2 bg-gray-100 p-4 whitespace-pre-wrap">{{ mail_preview }}</pre>
 {% endif %}
 {% endblock %}
