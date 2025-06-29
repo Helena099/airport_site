@@ -18,25 +18,26 @@ airport_site/                 ← repo root
 ├─ README.md                  ← **you are here**
 ├─ requirements.txt
 ├─ Scripts/
-│  └─ load_csv.py             ← import the 5 CSV files into Mongo
-├─ static/                    ← (optional) CSS/JS if you add any
+│  └─ load_csv.py             ← import CSV files into Mongo
+├─ analysis_and_graphics/     ← data exploration
+│  └─ traffic_analysis.ipynb  ← notebook of explication
+├─ static/                    ← (optional) CSS/JS if exists
 ├─ manage.py
 ├─ airport_site/              ← Django project
 │  ├─ settings.py
 │  ├─ urls.py
 │  └─ wsgi.py
 └─ airport/                   ← main app
-   ├─ models.py               ← Djongo models (PK = ObjectId)
-   ├─ views.py                ← list views use PyMongo, rest uses Django CBV
-   ├─ routers.py              ← routes airport models to “mongo” DB
-   ├─ reco.py                 ← K‑NN recommender
-   ├─ templates/airport/
-   │  ├─ base.html
-   │  ├─ passenger_list.html
-   │  ├─ flight_list.html
-   │  ├─ service_list.html
-   │  └─ reco.html
-   └─ forms.py
+   └─ models.py               ← Djongo models (PK = ObjectId)
+      views.py                ← list views use PyMongo, rest uses Django CBV
+      routers.py              ← routes airport models to “mongo” DB
+      reco.py                 ← K‑NN recommender
+      templates/airport/
+      ├─ base.html
+      ├─ passenger_list.html
+      ├─ flight_list.html
+      ├─ service_list.html
+      └─ reco.html
 ```
 
 ---
